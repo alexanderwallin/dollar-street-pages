@@ -5,6 +5,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Store } from '@ngrx/store';
 import {
   AppStates,
+  CountryIncomeDistribution,
   DrawDividersInterface,
   Place,
   StreetSettingsState
@@ -19,6 +20,7 @@ import {
 } from '@angular/core';
 import { GetStreetSettings } from '../../common/street-settings/ngrx/street-settings.actions';
 import { StreetFamilyDrawService } from './street-family.service';
+import { IncomeMountainService } from '../income-mountain/income-mountain.service';
 import { DEBOUNCE_TIME } from '../../defaultState';
 
 @Component({
@@ -45,13 +47,22 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
   public streetSettingsState: Observable<StreetSettingsState>;
   public streetSettingsStateSubscription: Subscription;
 
+  public incomeService: IncomeMountainService;
+  public incomeData: CountryIncomeDistribution;
+
   public constructor(elementRef: ElementRef,
                      streetDrawService: StreetFamilyDrawService,
+                     incomeMountainService: IncomeMountainService,
                      private store: Store<AppStates>) {
     this.element = elementRef.nativeElement;
     this.street = streetDrawService;
+    this.incomeService = incomeMountainService;
 
     this.streetSettingsState = this.store.select((appStates: AppStates) => appStates.streetSettings);
+  }
+
+  public ngOnChanges(): void {
+    this.incomeData = this.incomeService.getCountryIncomeDistribution(this.place.country);
   }
 
   public ngAfterViewInit(): void {

@@ -196,7 +196,11 @@ export class FamilyHeaderComponent implements OnInit, OnDestroy {
         }
 
         this.home = res.data;
-        this.streetFamilyData.emit({income: this.home.income, region: this.home.country.region});
+        this.streetFamilyData.emit({
+          income: this.home.income,
+          region: this.home.country.region,
+          country: this.home.country.originName,
+        });
         this.mapData = this.home.country;
 
         if (!this.home.translated && this.languageService.currentLanguage !== this.languageService.defaultLanguage) {

@@ -201,3 +201,10 @@ export interface TranslationsInterface {
 export interface SubscriptionsList {
   [key: string]: Subscription;
 }
+
+export interface CountryIncomeDistribution {
+  country: string;
+  population: number;
+  incomePerPerson: number;
+  gapminderGini: number | null;
+}

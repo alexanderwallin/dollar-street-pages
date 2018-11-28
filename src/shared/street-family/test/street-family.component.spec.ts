@@ -8,6 +8,8 @@ import {
 } from '../../../test/';
 import { StreetFamilyComponent } from '../street-family.component';
 import { StreetFamilyDrawService } from '../street-family.service';
+import { IncomeMountainComponent } from '../../income-mountain/income-mountain.component';
+import { IncomeMountainService } from '../../income-mountain/income-mountain.service';
 
 describe('StreetFamilyComponent', () => {
     let fixture: ComponentFixture<StreetFamilyComponent>;
@@ -18,9 +20,13 @@ describe('StreetFamilyComponent', () => {
             imports: [
                 StoreModule.forRoot({})
             ],
-            declarations: [StreetFamilyComponent],
+            declarations: [
+              StreetFamilyComponent,
+              IncomeMountainComponent
+            ],
             providers: [
                 StreetFamilyDrawService,
+                IncomeMountainService,
                 { provide: BrowserDetectionService, useClass: BrowserDetectionServiceMock }
             ]
         });

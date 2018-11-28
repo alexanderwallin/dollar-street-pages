@@ -67,6 +67,9 @@ import { TranslateModule } from 'ng2-translate';
 import { Angulartics2Module } from 'angulartics2';
 import { ImageLoadedService } from './image-loaded/image-loaded.service';
 
+import { IncomeMountainComponent } from './income-mountain/income-mountain.component';
+import { IncomeMountainService } from './income-mountain/income-mountain.service';
+
 @NgModule({
   imports: [
     HttpModule,
@@ -101,7 +104,8 @@ import { ImageLoadedService } from './image-loaded/image-loaded.service';
     IncomeFilterComponent,
     IsImageLoadedDirective,
     TranslateMeComponent,
-    StreetPinnedComponent
+    StreetPinnedComponent,
+    IncomeMountainComponent
   ],
   providers: [
     SocialShareButtonsService,
@@ -115,6 +119,7 @@ import { ImageLoadedService } from './image-loaded/image-loaded.service';
     StreetFamilyDrawService,
     StreetPinnedDrawService,
     ImageLoadedService,
+    IncomeMountainService
   ],
   exports: [
     RouterModule,
@@ -138,7 +143,8 @@ import { ImageLoadedService } from './image-loaded/image-loaded.service';
     MainMenuComponent,
     IsImageLoadedDirective,
     TranslateMeComponent,
-    StreetPinnedComponent
+    StreetPinnedComponent,
+    IncomeMountainComponent
   ]
 })
 export class SharedModule {}

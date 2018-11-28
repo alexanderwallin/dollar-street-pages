@@ -324,7 +324,8 @@ describe('FamilyHeaderComponent', () => {
       income: 1,
       country: {
         region: ['World'],
-        alias: 'Ukraine'
+        alias: 'Ukraine',
+        originName: 'Ukraine'
       },
       aboutData: expectedAboutData
     };
@@ -336,7 +337,7 @@ describe('FamilyHeaderComponent', () => {
     component.getFamilyHeaderData();
     fixture.detectChanges();
 
-    expect(expectedEvent).toEqual({income: 1, region: ['World']});
+    expect(expectedEvent).toEqual({income: 1, region: ['World'], country: 'Ukraine'});
   });
 
   it('open expand block for short-family-info', () => {
