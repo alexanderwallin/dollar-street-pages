@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { range } from 'd3-array';
 
 import { CountryIncomeDistribution } from '../../interfaces';
-import IncomeDistributionData from './data';
-import CountryNameToCodeMap from './country-names';
+import IncomeDistributionData from './country-income-data-2015';
+import CountryNameToCodeMap from './country-names-to-codes';
 
 @Injectable()
 export class IncomeMountainService {
