@@ -1,9 +1,20 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core'
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ViewChild
+} from '@angular/core'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { area } from 'd3-shape'
 import { select } from 'd3-selection'
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs/Subscription';
 
-import { CountryIncomeDistribution } from '../../interfaces';
+import { DEBOUNCE_TIME } from '../../defaultState';
+import { CountryIncomeDistribution, Point } from '../../interfaces';
 import { IncomeMountainService } from './income-mountain.service';
 
 /**
@@ -20,9 +31,7 @@ import { IncomeMountainService } from './income-mountain.service';
   templateUrl: './income-mountain.component.html',
   styleUrls: ['./income-mountain.component.css']
 })
-export class IncomeMountainComponent {
-  private incomeService: IncomeMountainService;
-
+export class IncomeMountainComponent implements AfterViewInit, onChanges, onDestroy {
   // This maps $/month to $/day, which is what we use to plot
   // income distribution.
   private static INCOME_RANGE = [
@@ -39,38 +48,71 @@ export class IncomeMountainComponent {
   @Input()
   public color: string;
 
+  private incomeService: IncomeMountainService;
+  private data: Point[] = [];
+  private resizeSubscribe: Subscription;
+
   public constructor(incomeMountainService: IncomeMountainService) {
     this.incomeService = incomeMountainService;
   }
 
   public ngOnChanges() {
     if (this.countryIncomeDistribution !== null) {
-      const $svg = this.svg.nativeElement;
-      const bounds = $svg.getBoundingClientRect();
-
       // Get relative income distribution
       const points = this.incomeService.getPointsFromMetrics(
         this.countryIncomeDistribution,
         IncomeMountainComponent.INCOME_RANGE
       );
-      const data = points.map(p => [p.x, p.y]);
-
-      // Defines axis scales
-      const x = scaleLog().domain(IncomeMountainComponent.INCOME_RANGE).range([0, bounds.width]);
-      const y = scaleLinear().domain([0, 1]).range([bounds.height, 0]);
-
-      // Create an area
-      const graphArea = area()
-        .x(d => x(d[0]))
-        .y0(d => y(0))
-        .y1(d => y(d[1]));
-
-      // Draw the path into the <svg>
-      select($svg)
-        .append('path')
-        .style('fill', this.color)
-        .data([data])
-        .attr('d', graphArea);
+      this.data = points.map((p): Point => [p.x, p.y])
     }
+    else {
+      this.data = [];
+    }
+
+    // Draw the graph
+    this.drawGraph();
+  }
+
+  public ngAfterViewInit(): void {
+    // Re-draw the graph when the window size changes
+    this.resizeSubscribe = fromEvent(window, 'resize')
+      .debounceTime(DEBOUNCE_TIME)
+      .subscribe(() => {
+        this.drawGraph();
+      });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
+  }
+
+  /**
+   * Draws the income mountain graph into the <svg> after first emptying it.
+   */
+  private drawGraph() {
+    const $svg = this.svg.nativeElement;
+    const bounds = $svg.getBoundingClientRect();
+
+    // Defines axis scales
+    const x = scaleLog().domain(IncomeMountainComponent.INCOME_RANGE).range([0, bounds.width]);
+    const y = scaleLinear().domain([0, 1]).range([bounds.height, 0]);
+
+    // Create an area
+    const graphArea = area()
+      .x(d => x(d[0]))
+      .y0(d => y(0))
+      .y1(d => y(d[1]));
+
+    // Clear the SVG
+    select($svg).selectAll('*').remove()
+
+    // Draw the path into the <svg>
+    select($svg)
+      .append('path')
+      .style('fill', this.color)
+      .data([this.data])
+      .attr('d', graphArea);
   }
 }

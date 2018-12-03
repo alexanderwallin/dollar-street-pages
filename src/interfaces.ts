@@ -208,3 +208,5 @@ export interface CountryIncomeDistribution {
   incomePerPerson: number;
   gapminderGini: number | null;
 }
+
+export type Point = [number, number];
