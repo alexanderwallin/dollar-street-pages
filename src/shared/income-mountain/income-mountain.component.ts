@@ -13,7 +13,7 @@ import { select } from 'd3-selection'
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
 
-import { DEBOUNCE_TIME } from '../../defaultState';
+import { DEBOUNCE_TIME, DefaultUrlParameters } from '../../defaultState';
 import { CountryIncomeDistribution, Point } from '../../interfaces';
 import { IncomeMountainService } from './income-mountain.service';
 
@@ -31,13 +31,15 @@ import { IncomeMountainService } from './income-mountain.service';
   templateUrl: './income-mountain.component.html',
   styleUrls: ['./income-mountain.component.css']
 })
-export class IncomeMountainComponent implements AfterViewInit, onChanges, onDestroy {
-  // This maps $/month to $/day, which is what we use to plot
-  // income distribution.
+export class IncomeMountainComponent implements AfterViewInit, OnChanges, OnDestroy {
+  /**
+   * This maps the income range from $/month to $/day, which is what we use
+   * to plot income distribution.
+   */
   private static INCOME_RANGE = [
-    16 * 12 / 365,
-    10800 * 12 / 365
-  ]
+    parseFloat(DefaultUrlParameters.lowIncome) * 12 / 365,
+    parseFloat(DefaultUrlParameters.highIncome) * 12 / 365
+  ];
 
   @ViewChild('svg')
   public svg: ElementRef;
