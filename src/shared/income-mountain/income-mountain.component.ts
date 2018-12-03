@@ -27,6 +27,9 @@ export class IncomeMountainComponent {
   @Input()
   public countryIncomeDistribution: CountryIncomeDistribution | null;
 
+  @Input()
+  public color: string;
+
   public constructor(incomeMountainService: IncomeMountainService) {
     this.incomeService = incomeMountainService;
   }
@@ -56,7 +59,7 @@ export class IncomeMountainComponent {
       // Draw the path into the <svg>
       select($svg)
         .append('path')
-        .style('fill', 'red')
+        .style('fill', this.color)
         .data([data])
         .attr('d', graphArea);
     }

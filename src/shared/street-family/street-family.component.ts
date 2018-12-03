@@ -23,6 +23,13 @@ import { StreetFamilyDrawService } from './street-family.service';
 import { IncomeMountainService } from '../income-mountain/income-mountain.service';
 import { DEBOUNCE_TIME } from '../../defaultState';
 
+const REGION_COLORS = {
+  'Africa': '#00afd4',
+  'The Americas': '#abec00',
+  'Asia': '#f13373',
+  'Europe': '#ffeb00',
+}
+
 @Component({
   selector: 'street-family',
   templateUrl: './street-family.component.html',
@@ -49,6 +56,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
   public incomeService: IncomeMountainService;
   public incomeData: CountryIncomeDistribution;
+  public regionColor: string;
 
   public constructor(elementRef: ElementRef,
                      streetDrawService: StreetFamilyDrawService,
@@ -63,6 +71,7 @@ export class StreetFamilyComponent implements OnDestroy, AfterViewInit {
 
   public ngOnChanges(): void {
     this.incomeData = this.incomeService.getCountryIncomeDistribution(this.place.country);
+    this.regionColor = REGION_COLORS[this.place.region];
   }
 
   public ngAfterViewInit(): void {
