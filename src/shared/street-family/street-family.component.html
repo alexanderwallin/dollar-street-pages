@@ -2,5 +2,8 @@
      class="street-family-box-container">
   <svg #svg
        id="chart"></svg>
-  <income-mountain [data]="incomeData"></income-mountain>
+
+  <div class="street-family-income-mountain">
+    <income-mountain [countryIncomeDistribution]="incomeData"></income-mountain>
+  </div>
 </div>
