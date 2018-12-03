@@ -27,12 +27,11 @@
 
 .street-family-income-mountain {
   position: absolute;
-  /* -15px corresponds to the height of the road */
-  top: -15px;
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  height: 44px;
+  height: 29px;
   /* 30px corresponds to the road's top corners' distances from the sides */
   padding: 0 30px;
 }
