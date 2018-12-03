@@ -36,6 +36,9 @@ export class IncomeMountainService {
   /**
    * Returns a log-normal graph representing a country's income distribution
    * given by mean icon and gini coefficient.
+   *
+   * NOTE(alexanderwallin): This function operates on a income-per-day basis,
+   * in contrast to the street components income-per-month scale.
    */
   public getPointsFromMetrics(
     countryIncomeDistribution: CountryIncomeDistribution,

@@ -6,6 +6,15 @@ import { select } from 'd3-selection'
 import { CountryIncomeDistribution } from '../../interfaces';
 import { IncomeMountainService } from './income-mountain.service';
 
+/**
+ * <income-mountain />
+ *
+ * This component takes metrics from a country's income data and renders
+ * a bell-shaped income distribution graph.
+ *
+ * NOTE(alexanderwallin): This component operates on a income-per-day basis,
+ * in contrast to the street components income-per-month scale.
+ */
 @Component({
   selector: 'income-mountain',
   templateUrl: './income-mountain.component.html',
